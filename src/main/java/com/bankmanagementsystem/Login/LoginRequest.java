@@ -1,13 +1,16 @@
 package com.bankmanagementsystem.Login;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginRequest {
 	// Getters and Setters
-	private String userName;
+	private String username;
 	private String password;
 
 }

@@ -19,7 +19,7 @@ public class CustomerService {
 	}
 
 	public void saveCustomer(Customer customer) {
-		Optional<Customer> cusUser = customerRespository.findByUserName(customer.getUserName());
+		Optional<Customer> cusUser = customerRespository.findByUserName(customer.getUsername());
 		Optional<Customer> cusEmail = customerRespository.findByEmail(customer.getEmail());
 		if(cusUser.isPresent()){
 			throw new IllegalStateException("Username is already used!");
@@ -67,6 +67,10 @@ public class CustomerService {
 			throw new IllegalStateException("Username not found!");
 		}
 		return c;
+	}
+
+	public String d(){
+		return "Response from other side";
 	}
 
 

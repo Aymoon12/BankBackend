@@ -1,9 +1,15 @@
 package com.bankmanagementsystem.customer;
 
+import brave.Response;
+import com.bankmanagementsystem.Authentication.config.JwtService;
 import com.bankmanagementsystem.Login.LoginRequest;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +19,16 @@ import com.bankmanagementsystem.Exceptions.LoginExceptions;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="/api/v1/bank")
 @CrossOrigin
+@RequestMapping("/api/v1/bank")
 public class CustomerController {
 
 	@Autowired
 	private final CustomerService customerService;
 	private final CustomerRespository customerRespository;
+
+	@Autowired
+	UserDetailsService userDetailsService;
 
 	@Autowired
 	public CustomerController(CustomerService customerService, CustomerRespository customerRespository) {
@@ -33,15 +42,14 @@ public class CustomerController {
 		return new ResponseEntity<>("Customer added successfully", HttpStatus.CREATED);
 	}
 
-	@PostMapping("/getAll")
-	public List<Customer> getAllCustomers(){
-		return customerService.getAllCustomers();
+	@GetMapping("/getAll")
+	public ResponseEntity<List<Customer>> getAllCustomers(){
+		return ResponseEntity.ok(customerService.getAllCustomers());
 	}
 
 	@PostMapping("/login")
 	public ResponseEntity<Customer> loginCustomer(@RequestBody LoginRequest loginRequest) {
-		Customer c = customerService.login(loginRequest.getUserName(), loginRequest.getPassword());
-		return new ResponseEntity<>(c,HttpStatus.ACCEPTED);
+		return ResponseEntity.ok(customerService.login(loginRequest.getUsername(), loginRequest.getPassword()));
 	}
 
 	@GetMapping("/checkUser")
@@ -56,6 +64,38 @@ public class CustomerController {
 		return new ResponseEntity<>(true,HttpStatus.ACCEPTED);
 
 	}
+
+	@GetMapping("/demo")
+	public ResponseEntity<String> demo(){
+		return ResponseEntity.ok(customerService.d());
+	}
+
+	@GetMapping("/all")
+	public ResponseEntity<List<Customer>> getAll(){
+		return ResponseEntity.ok(customerRespository.findAll());
+	}
+
+	@GetMapping("/user")
+	public ResponseEntity<Customer> getUser(HttpServletRequest http){
+		JwtService jwtService = new JwtService();
+		String jwtToken = null;
+
+		String authHeader = http.getHeader("Authorization");
+		String username = null;
+
+		if(authHeader != null || authHeader.startsWith("Bearer ")){
+			jwtToken = authHeader.substring(7);
+			username = jwtService.extractUsername(jwtToken);
+			if(username != null) {
+				UserDetails cus = userDetailsService.loadUserByUsername(username);
+				String un = cus.getUsername();
+				return ResponseEntity.ok(customerRespository.findByUserName(un).orElse(null));
+			}
+		}
+		return null;
+	}
+
+
 
 
 
