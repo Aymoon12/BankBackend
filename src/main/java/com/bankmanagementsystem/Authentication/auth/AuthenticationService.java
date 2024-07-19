@@ -1,23 +1,18 @@
 package com.bankmanagementsystem.Authentication.auth;
 
 import com.bankmanagementsystem.Authentication.config.JwtService;
-import com.bankmanagementsystem.Login.LoginRequest;
-import com.bankmanagementsystem.Login.RegisterRequest;
+import com.bankmanagementsystem.Requests.LoginRequest;
+import com.bankmanagementsystem.Requests.RegisterRequest;
 import com.bankmanagementsystem.customer.Customer;
 import com.bankmanagementsystem.customer.CustomerRespository;
 import com.bankmanagementsystem.customer.CustomerService;
 import com.bankmanagementsystem.customer.Role;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.net.PasswordAuthentication;
 
 @Service
 @RequiredArgsConstructor

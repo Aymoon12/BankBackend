@@ -17,4 +17,7 @@ public interface CustomerRespository extends JpaRepository<Customer, Integer> {
 
 	@Query("SELECT c FROM Customer c WHERE c.password =?1")
 	Optional<Customer> findByPassword(String password);
+
+	@Query("SELECT c FROM Customer c WHERE c.customer_id=?1")
+	Optional<Customer> findByCustomerId(int customer_id);
 }

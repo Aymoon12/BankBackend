@@ -1,10 +1,8 @@
 package com.bankmanagementsystem.Authentication.auth;
 
-import brave.Response;
-import com.bankmanagementsystem.Login.LoginRequest;
-import com.bankmanagementsystem.Login.RegisterRequest;
+import com.bankmanagementsystem.Requests.LoginRequest;
+import com.bankmanagementsystem.Requests.RegisterRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

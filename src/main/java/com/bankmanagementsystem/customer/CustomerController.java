@@ -1,20 +1,16 @@
 package com.bankmanagementsystem.customer;
 
-import brave.Response;
 import com.bankmanagementsystem.Authentication.config.JwtService;
-import com.bankmanagementsystem.Login.LoginRequest;
-import jakarta.servlet.http.HttpServlet;
+import com.bankmanagementsystem.Requests.CustId;
+import com.bankmanagementsystem.Requests.LoginRequest;
+import com.bankmanagementsystem.account.Account;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
-import com.bankmanagementsystem.Login.LoginRequest;
-import com.bankmanagementsystem.Exceptions.LoginExceptions;
 
 import java.util.List;
 
@@ -93,6 +89,11 @@ public class CustomerController {
 			}
 		}
 		return null;
+	}
+
+	@GetMapping("/getAccounts")
+	public ResponseEntity<List<Account>> getAccounts(@RequestBody CustId custid){
+		return ResponseEntity.ok(customerService.getAccounts(custid.getCustomer_id()));
 	}
 
 

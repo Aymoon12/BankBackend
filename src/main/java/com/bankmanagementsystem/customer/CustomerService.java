@@ -1,7 +1,10 @@
 package com.bankmanagementsystem.customer;
 
+import com.bankmanagementsystem.account.Account;
+import com.bankmanagementsystem.account.AccountRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +15,15 @@ public class CustomerService {
 
 	@Autowired
 	private final CustomerRespository customerRespository;
+	@Autowired
+	private final PasswordEncoder passwordEncoder;
+	@Autowired
+	private AccountRepository accountRepository;
 
 	@Autowired
-	public CustomerService(CustomerRespository customerRespository) {
+	public CustomerService(CustomerRespository customerRespository, PasswordEncoder passwordEncoder) {
 		this.customerRespository = customerRespository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	public void saveCustomer(Customer customer) {
@@ -57,7 +65,7 @@ public class CustomerService {
 		if(c == null){
 			throw new IllegalStateException("Username not found!");
 		}
-		c.setPassword(newPassword);
+		c.setPassword(passwordEncoder.encode(newPassword));
 	}
 
 
@@ -74,4 +82,11 @@ public class CustomerService {
 	}
 
 
+	public List<Account> getAccounts(int customerId) {
+		Customer cus = customerRespository.findByCustomerId(customerId).orElse(null);
+		if(cus == null){
+			throw new IllegalStateException("Customer not found!");
+		}
+		return cus.getAccounts();
+	}
 }

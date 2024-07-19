@@ -1,4 +1,4 @@
-package com.bankmanagementsystem.Login;
+package com.bankmanagementsystem.Requests;
 
 import lombok.*;
 

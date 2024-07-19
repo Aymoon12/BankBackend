@@ -1,6 +1,7 @@
 package com.bankmanagementsystem.customer;
 
 
+import com.bankmanagementsystem.account.Account;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.AnyKeyJavaClass;
@@ -147,6 +148,14 @@ public class Customer implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return UserDetails.super.isEnabled();
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name="customer_id")
+	private List<Account> accounts = new ArrayList<>();
+
+	public void addAccount(Account account) {
+		accounts.add(account);
 	}
 
 
