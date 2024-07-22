@@ -1,14 +1,16 @@
 package com.bankmanagementsystem.account;
 
 import brave.Response;
-import com.bankmanagementsystem.Requests.AccountRegistrationRequest;
-import com.bankmanagementsystem.Requests.DeleteRequest;
-import com.bankmanagementsystem.Requests.MoneyHandlingRequest;
-import com.bankmanagementsystem.Requests.TransferRequest;
+import com.bankmanagementsystem.Requests.*;
+import com.bankmanagementsystem.transactions.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -40,9 +42,17 @@ public class AccountController {
 		return ResponseEntity.ok(accountService.delete(account_number));
 	}
 
+	@PostMapping("/getTransactions")
+	public ResponseEntity<List<Transaction>> getTransactions(@RequestBody TransactionRequest tr){
+		return ResponseEntity.ok(accountService.getTransactions(tr));
+	}
 
-
-
-
-
+	@GetMapping("/getAccount/{id}")
+	public ResponseEntity<Account> getAccountById(@PathVariable("id") int account_number){
+		Account account = accountService.getAccount(account_number);
+		if(account == null){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+		return ResponseEntity.ok(account);
+	}
 }

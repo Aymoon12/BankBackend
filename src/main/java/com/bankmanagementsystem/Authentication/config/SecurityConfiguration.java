@@ -39,7 +39,7 @@ public class SecurityConfiguration {
 									.authenticated();
 
 						})
-				.oauth2Login(Customizer.withDefaults())
+//				.oauth2Login(Customizer.withDefaults())
 				.userDetailsService(userDetailsService)
 				.sessionManagement(session->session
 						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

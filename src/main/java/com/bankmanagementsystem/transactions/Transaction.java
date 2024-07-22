@@ -39,6 +39,9 @@ public class Transaction {
 	@Column(name="destination_account")
 	private int destination_account;
 
+	@CreationTimestamp
+	private LocalDateTime created_at;
+
 
 
 }

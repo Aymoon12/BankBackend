@@ -1,17 +1,17 @@
 package com.bankmanagementsystem.account;
 
 
-import com.bankmanagementsystem.Requests.AccountRegistrationRequest;
-import com.bankmanagementsystem.Requests.DeleteRequest;
-import com.bankmanagementsystem.Requests.MoneyHandlingRequest;
-import com.bankmanagementsystem.Requests.TransferRequest;
+import com.bankmanagementsystem.Requests.*;
 import com.bankmanagementsystem.customer.CustomerRespository;
 import com.bankmanagementsystem.customer.CustomerService;
+import com.bankmanagementsystem.transactions.Transaction;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -99,5 +99,18 @@ public class AccountService {
 		}
 		accountRepository.delete(account);
 		return account;
+	}
+
+
+	public List<Transaction> getTransactions(TransactionRequest tr) {
+		Account account = accountRepository.findByAccountNumber(tr.getAccount_number()).orElse(null);
+		if(account == null){
+			throw new IllegalStateException("Account not found");
+		}
+		return account.getTransactions();
+	}
+
+	public Account getAccount(int account_number) {
+		return accountRepository.findByAccountNumber(account_number).orElse(null);
 	}
 }

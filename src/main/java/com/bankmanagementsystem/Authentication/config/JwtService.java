@@ -9,6 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -55,6 +56,25 @@ public class JwtService {
 				.signWith(getSiginInKey())
 				.compact();
 		return token;
+	}
+
+	public String generateToken(OAuth2User oauth2User) {
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("sub", oauth2User.getName());
+		claims.put("name", oauth2User.getAttribute("name"));
+		claims.put("email", oauth2User.getAttribute("email"));
+
+
+		String token = Jwts
+				.builder()
+				.subject(oauth2User.getName())
+				.setClaims(claims)
+				.issuedAt(new Date(System.currentTimeMillis()))
+				.expiration(new Date(System.currentTimeMillis() + 24*60*60*1000))
+				.signWith(getSiginInKey())
+				.compact();
+		return token;
+
 	}
 
 

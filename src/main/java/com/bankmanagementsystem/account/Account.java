@@ -1,11 +1,14 @@
 package com.bankmanagementsystem.account;
 
+import com.bankmanagementsystem.transactions.Transaction;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="account")
@@ -47,4 +50,9 @@ public class Account {
 	private int customer_id;
 
 	private String account_name;
+
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name="account_number")
+	private List<Transaction> transactions = new ArrayList<>();
 }
